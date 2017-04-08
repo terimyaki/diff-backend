@@ -1,18 +1,18 @@
 // Edges
 const BRANCH = 'branch';
-const COMMIT = 'commit';
 const HEAD = 'head';
+const COMMIT = 'commit';
 
 // Vertices
-const CONTENT = 'content';
 const REPO = 'repo';
 const TREE = 'tree';
+const CONTENT = 'content';
 
 module.exports = {
   BRANCH,
-  COMMIT,
   HEAD,
-  CONTENT,
+  COMMIT,
   REPO,
   TREE,
+  CONTENT,
 };

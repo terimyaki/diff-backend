@@ -1,0 +1,23 @@
+{
+  "name": "diff-backend",
+  "version": "1.0.0",
+  "description": "Create, save and track notes. This is the backend of the application.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/terimyaki/diff-backend.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/terimyaki/diff-backend/issues"
+  },
+  "homepage": "https://github.com/terimyaki/diff-backend#readme",
+  "dependencies": {
+    "diff": "^3.2.0"
+  }
+}
