@@ -4,34 +4,34 @@ const schemas = require('./schemas');
 const router = createRouter();
 
 router.get('/', controllers.list)
-.summary('List Notes')
-.description('Retrieves a list of notes');
+.summary('List Entries')
+.description('Retrieves a list of entries');
 
 router.post('/', controllers.create)
 .body(schemas.entry, 'JSON note entry')
-.summary('Create Note')
-.description('Creates a note');
+.summary('Create Entry')
+.description('Creates a entry');
 
 router.get('/:id', controllers.get)
 .pathParam('id', schemas.id)
-.summary('Get a Note')
-.description('Retrieves a note by id');
+.summary('Get an Entry')
+.description('Retrieves an entry by id');
 
 router.patch('/:id', controllers.update)
 .pathParam('id', schemas.id)
-.body(schemas.update, 'JSON note update')
-.summary('Update a Note')
-.description('Updates a note by id');
+.body(schemas.update, 'JSON entry update')
+.summary('Update an Entry')
+.description('Updates an entry by id');
 
 router.put('/:id', controllers.update)
 .pathParam('id', schemas.id)
-.body(schemas.update, 'JSON note update')
-.summary('Update a Note')
-.description('Updates a note by id');
+.body(schemas.update, 'JSON entry update')
+.summary('Update an Entry')
+.description('Updates an entry by id');
 
 router.delete('/:id', controllers.destroy)
 .pathParam('id', schemas.id)
-.summary('Delete a Note')
-.description('Deletes a note by id');
+.summary('Delete a Entry')
+.description('Deletes an entry by id');
 
 module.exports = router;
