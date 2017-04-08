@@ -3,7 +3,7 @@ const jsdiff = require('diff');
 const {
   BRANCH,
   HEAD,
-  COMMENT,
+  COMMIT,
   REPO,
   TREE,
   CONTENT,
