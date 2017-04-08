@@ -1,17 +1,13 @@
-const joi = require('joi');
 const createRouter = require('@arangodb/foxx/router');
 const controllers = require('./controllers');
+const schemas = require('./schemas');
 
 const router = createRouter();
 
-router.tag('commits');
-
-router.get('/', controllers.list)
-.summary('List Commits')
-.description('Gets all commits');
+router.tag('commit');
 
 router.get('/:id', controllers.get)
-.pathParam('id', joi.string().required())
+.pathParam('id', schemas.id)
 .summary('Get A Commit')
 .description('Gets a commit by id');
 

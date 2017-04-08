@@ -3,6 +3,8 @@ const controllers = require('./controllers');
 const schemas = require('./schemas');
 const router = createRouter();
 
+router.tag('entry');
+
 router.get('/', controllers.list)
 .summary('List Entries')
 .description('Retrieves a list of entries');
@@ -33,5 +35,10 @@ router.delete('/:id', controllers.destroy)
 .pathParam('id', schemas.id)
 .summary('Delete a Entry')
 .description('Deletes an entry by id');
+
+router.get('/:id/branches', controllers.listBranches)
+.pathParam('id', schemas.id, 'Id of Entry')
+.summary('List Branches of an Entry')
+.description('List all branches of an entry');
 
 module.exports = router;

@@ -18,10 +18,15 @@ const destroy = (req, res) => {
 
 }
 
+const listBranches = (req, res) => {
+
+}
+
 module.exports = {
   list,
   get,
   create,
   update,
   destroy,
+  listBranches,
 };
