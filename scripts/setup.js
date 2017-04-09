@@ -32,45 +32,31 @@ console.log('Starting setup script ...');
 });
 
 // Seed one representation
-db._executeTransaction({
-  collections: {
-    write: [
-      REPO,
-      TREE,
-      CONTENT,
-      BRANCH,
-      HEAD,
-      COMMIT,
-    ]
-  },
-  action: () => {
-    const content1 = { value: 'initial text' };
-    const content2 = { value: 'second text' };
-    const content3 = { value: 'third text' };
+const content1 = { value: 'initial text' };
+const content2 = { value: 'second text' };
+const content3 = { value: 'third text' };
 
-    const repoVertex = module.context.collection(REPO);
-    const treeVertex = module.context.collection(TREE);
-    const contentVertex = module.context.collection(CONTENT);
-    const branchEdge = module.context.collection(BRANCH);
-    const headEdge = module.context.collection(HEAD);
-    const commitEdge = module.context.collection(COMMIT);
+const repoVertex = module.context.collection(REPO);
+const treeVertex = module.context.collection(TREE);
+const contentVertex = module.context.collection(CONTENT);
+const branchEdge = module.context.collection(BRANCH);
+const headEdge = module.context.collection(HEAD);
+const commitEdge = module.context.collection(COMMIT);
 
-    const repo = repoVertex.save({ title: 'Test Title' });
-    const masterTree = treeVertex.save({ name: 'master' });
-    const devTree = treeVertex.save({ name: 'dev' });
-    const contentDoc1 = contentVertex.save(content1);
-    const contentDoc2 = contentVertex.save(content2);
-    const contentDoc3 = contentVertex.save(content3);
-    console.log('docs', repo, masterTree, contentDoc3);
-    
-    const commit1 = commitEdge.save({ _from: contentDoc2._id, _to: contentDoc1._id, diff: jsdiff.diffWords(contentDoc1.value, contentDoc2.value) });
-    const commit2 = commitEdge.save({ _from: contentDoc3._id, _to: contentDoc2._id, diff: jsdiff.diffWords(contentDoc2.value, contentDoc3.value) });
-    const masterHead = headEdge.save({ _from: masterTree._id, _to: contentDoc3._id });
-    const devHead = headEdge.save({ _from: devTree._id, _to: contentDoc2._id });
-    const masterBranch = branchEdge.save({ _from: repo._id, to: masterTree._id, isMaster: true });
-    const devBranch = branchEdge.save({ _from: repo._id, to: masterTree._id });
-    console.log('edges', masterBranch, masterHead, commit1);
-  }
-});
+const repo = repoVertex.save({ title: 'Test Title' });
+const masterTree = treeVertex.save({ name: 'master' });
+const devTree = treeVertex.save({ name: 'dev' });
+const contentDoc1 = contentVertex.save(content1);
+const contentDoc2 = contentVertex.save(content2);
+const contentDoc3 = contentVertex.save(content3);
+console.log('docs', repo, masterTree, contentDoc3);
+const commit1 = commitEdge.save({ _from: contentDoc2._id, _to: contentDoc1._id, diff: jsdiff.diffWords(contentDoc1.value, contentDoc2.value) });
+const commit2 = commitEdge.save({ _from: contentDoc3._id, _to: contentDoc2._id, diff: jsdiff.diffWords(contentDoc2.value, contentDoc3.value) });
+const masterHead = headEdge.save({ _from: masterTree._id, _to: contentDoc3._id });
+const devHead = headEdge.save({ _from: devTree._id, _to: contentDoc2._id });
+const masterBranch = branchEdge.save({ _from: repo._id, to: masterTree._id, isMaster: true });
+const devBranch = branchEdge.save({ _from: repo._id, to: masterTree._id });
+
+console.log('edges', masterBranch, masterHead, commit1);
 
 console.log('Setup script completed!');
