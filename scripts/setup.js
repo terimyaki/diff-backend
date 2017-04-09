@@ -11,22 +11,22 @@ const {
 
 console.log('Starting setup script ...');
 
-[BRANCH, HEAD, COMMIT].forEach(name => {
-  console.log('Starting on edge collection ...', name);
-  const collection = module.context.collectionName(name);
-  if(db._collection(collection) === null) {
-    db._createEdgeCollection(collection);
-    console.log('Created edge collection.');
+[REPO, TREE, CONTENT].forEach(name => {
+  console.log('Starting on vertex collection ...', name);
+  const collectionName = module.context.collectionName(name);
+  if(db._collection(collectionName) === null) {
+    db._createDocumentCollection(collectionName);
+    console.log('Created vertex collection.');
   }
   else console.log('Edge collection exists. Doing nothing.');
 });
 
-[REPO, TREE, CONTENT].forEach(name => {
-  console.log('Starting on vertex collection ...', name);
-  const collection = module.context.collectionName(name);
-  if(db._collection(collection) === null) {
-    db._createDocumentCollection(collection);
-    console.log('Created vertex collection.');
+[BRANCH, HEAD, COMMIT].forEach(name => {
+  console.log('Starting on edge collection ...', name);
+  const collectionName = module.context.collectionName(name);
+  if(db._collection(collectionName) === null) {
+    db._createEdgeCollection(collectionName);
+    console.log('Created edge collection.');
   }
   else console.log('Edge collection exists. Doing nothing.');
 });
@@ -36,12 +36,12 @@ const content1 = { value: 'initial text' };
 const content2 = { value: 'second text' };
 const content3 = { value: 'third text' };
 
-const repoVertex = db._collection(REPO);
-const treeVertex = db._collection(TREE);
-const contentVertex = db._collection(CONTENT);
-const branchEdge = db._collection(BRANCH);
-const headEdge = db._collection(HEAD);
-const commitEdge = db._collection(COMMIT);
+const repoVertex = module.context.collection(REPO);
+const treeVertex = module.context.collection(TREE);
+const contentVertex = module.context.collection(CONTENT);
+const branchEdge = module.context.collection(BRANCH);
+const headEdge = module.context.collection(HEAD);
+const commitEdge = module.context.collection(COMMIT);
 
 const repo = repoVertex.save({ title: 'Test Title' });
 const masterTree = treeVertex.save({ name: 'master', isMaster: true });

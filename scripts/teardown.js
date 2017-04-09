@@ -5,8 +5,7 @@ console.log('Starting teardown script ...');
 
 Object.keys(namesDict).forEach(name => {
   console.log('Starting on collection ...', namesDict[name]);
-  const collectionName = module.context.collectionName(namesDict[name]);
-  const collection = db._collection(collectionName);
+  const collection = module.context.collection(namesDict[name]);
   if(collection) {
     collection.drop();
     console.log('Dropped collection.');
