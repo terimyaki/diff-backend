@@ -50,13 +50,12 @@ const contentDoc1 = contentVertex.save(content1);
 const contentDoc2 = contentVertex.save(content2);
 const contentDoc3 = contentVertex.save(content3);
 console.log('docs', repo, masterTree, contentDoc3);
-const commit1 = commitEdge.save({ _from: contentDoc2._id, _to: contentDoc1._id, diff: jsdiff.diffWords(contentDoc1.value, contentDoc2.value) });
-const commit2 = commitEdge.save({ _from: contentDoc3._id, _to: contentDoc2._id, diff: jsdiff.diffWords(contentDoc2.value, contentDoc3.value) });
+const commit1 = commitEdge.save({ _from: contentDoc2._id, _to: contentDoc1._id, diff: jsdiff.diffWords(content1.value, content2.value) });
+const commit2 = commitEdge.save({ _from: contentDoc3._id, _to: contentDoc2._id, diff: jsdiff.diffWords(content2.value, content3.value) });
 const masterHead = headEdge.save({ _from: masterTree._id, _to: contentDoc3._id });
 const devHead = headEdge.save({ _from: devTree._id, _to: contentDoc2._id });
 const masterBranch = branchEdge.save({ _from: repo._id, to: masterTree._id, isMaster: true });
 const devBranch = branchEdge.save({ _from: repo._id, to: masterTree._id });
-
 console.log('edges', masterBranch, masterHead, commit1);
 
 console.log('Setup script completed!');
