@@ -13,8 +13,9 @@ console.log('Starting setup script ...');
 
 [REPO, TREE, CONTENT].forEach(name => {
   console.log('Starting on vertex collection ...', name);
-  if(db._collection(name) === null) {
-    db._createDocumentCollection(name);
+  const collectionName = module.context.collectionName(name);
+  if(db._collection(collectionName) === null) {
+    db._createDocumentCollection(collectionName);
     console.log('Created vertex collection.');
   }
   else console.log('Edge collection exists. Doing nothing.');
@@ -22,8 +23,9 @@ console.log('Starting setup script ...');
 
 [BRANCH, HEAD, COMMIT].forEach(name => {
   console.log('Starting on edge collection ...', name);
-  if(db._collection(name) === null) {
-    db._createEdgeCollection(name);
+  const collectionName = module.context.collectionName(name);
+  if(db._collection(collectionName) === null) {
+    db._createEdgeCollection(collectionName);
     console.log('Created edge collection.');
   }
   else console.log('Edge collection exists. Doing nothing.');

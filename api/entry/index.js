@@ -11,7 +11,7 @@ router.get('/', controllers.list)
 .description('Retrieves a list of entries');
 
 router.post('/', controllers.create)
-.body(schemas.entry, 'JSON note entry')
+.body(schemas.entry, ["application/json"], 'JSON note entry')
 .summary('Create Entry')
 .description('Creates a entry');
 
@@ -22,13 +22,13 @@ router.get('/:id', controllers.get)
 
 router.patch('/:id', controllers.update)
 .pathParam('id', schemas.id)
-.body(schemas.update, 'JSON entry update')
+.body(schemas.update, ["application/json"], 'JSON entry update')
 .summary('Update an Entry')
 .description('Updates an entry by id');
 
 router.put('/:id', controllers.update)
 .pathParam('id', schemas.id)
-.body(schemas.update, 'JSON entry update')
+.body(schemas.update, ["application/json"], 'JSON entry update')
 .summary('Update an Entry')
 .description('Updates an entry by id');
 
