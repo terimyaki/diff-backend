@@ -1,7 +1,9 @@
+const db = require('@arangodb').db;
 const { REPO } = require('../names');
-const getDb = name => name ? require('@arangodb').db[name] : require('@arangodb').db;
-const list = () => getDb(REPO).all().toArray();
-const create = entry => getDb(REPO).save(entry);
+const repoVertex = db._collection(REPO);
+
+const list = () => repoVertex.all().toArray();
+const create = entry => repoVertex.insert(entry);
 
 module.exports = {
   list,
