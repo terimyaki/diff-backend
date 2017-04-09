@@ -9,7 +9,7 @@ const {
 const repoVertex = require('./vertex/repo');
 
 const initializeRepo = ({ title, content }) => {
-  db._executeTransaction({
+  return db._executeTransaction({
     collections: {
       write: [
         REPO,
@@ -20,13 +20,14 @@ const initializeRepo = ({ title, content }) => {
       ]
     },
     action: function() {
+      console.log('performing action...');
       const thisDb = require('@arangodb').db;
-      const repo = thisDb[REPO].insert({ title });
-      const tree = thisDb[TREE].save({ name: 'master', isMaster: true });
-      const content = thisDb[CONTENT].save({ value: content });
-      console.log('this is the repo', repo);
-      console.log('this is the tree', tree);
-      console.log('this is the content', content);
+      const repo = thisDb[REPO].save({ title }, { returnNew: true });
+      const tree = thisDb[TREE].save({ name: 'master' }, { returnNew: true });
+      const content = thisDb[CONTENT].save({ value: content }, { returnNew: true });
+      const branch = thisDb[BRANCH].save({ _from: repo._id, _to: tree.__id, isMaster: true });
+      const head = thisDb[HEAD].save({ _from: tree._id, _to: content._id });
+      return content;
     }
   });
 }

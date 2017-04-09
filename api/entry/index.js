@@ -6,6 +6,7 @@ const router = createRouter();
 router.tag('entry');
 
 router.get('/', controllers.list)
+.response(200, schemas.list)
 .summary('List Entries')
 .description('Retrieves a list of entries');
 
@@ -38,6 +39,7 @@ router.delete('/:id', controllers.destroy)
 
 router.get('/:id/branches', controllers.listBranches)
 .pathParam('id', schemas.id, 'Id of Entry')
+.response(200, schemas.list)
 .summary('List Branches of an Entry')
 .description('List all branches of an entry');
 
