@@ -9,7 +9,7 @@ const {
 const repoVertex = require('./vertex/repo');
 
 const initializeRepo = ({ title, content }) => {
-  db._executeTransactions({
+  db._executeTransaction({
     collections: {
       write: [
         REPO,
