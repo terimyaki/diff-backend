@@ -53,7 +53,7 @@ const commit1 = commitEdge.save({ _from: contentDoc2._id, _to: contentDoc1._id, 
 const commit2 = commitEdge.save({ _from: contentDoc3._id, _to: contentDoc2._id, diff: jsdiff.diffWords(content2.value, content3.value) });
 const masterHead = headEdge.save({ _from: masterTree._id, _to: contentDoc3._id });
 const devHead = headEdge.save({ _from: devTree._id, _to: contentDoc2._id });
-const masterBranch = branchEdge.save({ _from: repo._id, _to: masterTree._id, isMaster: true });
+const masterBranch = branchEdge.save({ _from: repo._id, _to: masterTree._id, isDefault: true });
 const devBranch = branchEdge.save({ _from: repo._id, _to: masterTree._id });
 
 console.log('Setup script completed!');

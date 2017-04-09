@@ -25,7 +25,7 @@ const initializeRepo = ({ title, content }) => {
       const repo = thisDb[REPO].save({ title }, { returnNew: true });
       const tree = thisDb[TREE].save({ name: 'master' }, { returnNew: true });
       const content = thisDb[CONTENT].save({ value: content }, { returnNew: true });
-      const branch = thisDb[BRANCH].save({ _from: repo._id, _to: tree.__id, isMaster: true });
+      const branch = thisDb[BRANCH].save({ _from: repo._id, _to: tree.__id, isDefault: true });
       const head = thisDb[HEAD].save({ _from: tree._id, _to: content._id });
       return content;
     }

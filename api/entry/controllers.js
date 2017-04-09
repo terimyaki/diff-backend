@@ -5,16 +5,16 @@ const list = (req, res) => {
   try {
     console.log('got list request');
     const data = repoVertex.list();
-    res.json(data);
+    return res.json(data);
   }
   catch(e) {
     console.log('cant find anything', e);
-    res.sendStatus(404);
+    return res.sendStatus(404);
   }
 }
 
 const get = (req, res) => {
-
+  res.sendStatus(200);
 }
 
 const create = (req, res) => {
@@ -22,24 +22,24 @@ const create = (req, res) => {
     console.log('received create request');
     const { body } = req;
     const data = transactions.initializeRepo(body);
-    res.json(data);
+    return res.json(data);
   }
   catch(e) {
     console.log('cant create', e);
-    res.sendStatus(500);
+    return res.sendStatus(500);
   }
 }
 
 const update = (req, res) => {
-
+  res.sendStatus(200);
 }
 
 const destroy = (req, res) => {
-
+  res.sendStatus(200);
 }
 
 const listBranches = (req, res) => {
-
+  res.sendStatus(200);
 }
 
 module.exports = {
