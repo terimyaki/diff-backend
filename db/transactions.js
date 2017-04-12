@@ -35,7 +35,7 @@ const initializeRepo = ({ title, content }) => {
   });
 }
 
-const updateRepo = (branchId, content) => {
+const updateRepo = (treeId, content) => {
   return db._executeTransaction({
     collections: {
       write: [
@@ -45,12 +45,49 @@ const updateRepo = (branchId, content) => {
       ]
     },
     action: () => {
-      const headOld = db[HEAD].inEdges(branchId)[0];
+      const headOld = db[HEAD].inEdges(treeId)[0];
       const contentOld = db[CONTENT].document({ _id: headOld._to });
       const contentNew = db[CONTENT].save({ value: content }, { returnNew: true });
       const commit = db[COMMIT].save({ _from: contentOld._id, _to: contentNew._id, diff: jsdiff.diffWords(contentOld.value, contentNew.value)});
       const head = db[HEAD].update(headOld._id, { _to: contentNew._id });
       return contentNew;
+    }
+  });
+}
+
+const createBranch = (repoId, treeId, name) => {
+  return db._executeTransaction({
+    collections: {
+      write: [
+        BRANCH,
+        TREE,
+        HEAD,
+      ]
+    },
+    action: () => {
+      const tree = db[TREE].save({ name });
+      const branch = db[BRANCH].save({ _from: repoId, _to: tree._id });
+      const headOld = db[HEAD].inEdges(treeId)[0];
+      const headNew = db[HEAD].save({ _from: tree._id, _to: headOld._to });
+      return branch;
+    }
+  });
+}
+
+const createFork = (repoId) => {
+  return db._executeTransaction({
+    collections: {
+      write: [
+        REPO,
+        BRANCH,
+      ]
+    },
+    action: () => {
+      const branchesOld = db[BRANCH].inEdges(repoId);
+      const repoOld = db[REPO].document({ _id: repoId });
+      const repo = db[REPO].save({ title: repoOld.title });
+      branchesOld.forEach(branchDoc => db[BRANCH].save({ _from: repo._id, _to: branchDoc._id }));
+      return repo;
     }
   });
 }

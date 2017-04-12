@@ -14,7 +14,8 @@ const {
 } = Object.keys(names).reduce((accum, key) => {
   accum[key] = module.context.collectionName(names[key]);
   return accum;
-})
+}, {});
+
 [REPO, TREE, CONTENT].forEach(name => {
   console.log('Starting on vertex collection ...', name);
   if(db._collection(name) === null) {
