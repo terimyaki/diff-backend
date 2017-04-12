@@ -1,21 +1,24 @@
 const db = require('@arangodb').db;
+const graph = require("@arangodb/general-graph");
 const jsdiff = require('diff');
-const {
-  BRANCH,
-  HEAD,
-  COMMIT,
-  REPO,
-  TREE,
-  CONTENT,
-} = require('../db/names');
+const names = require('../db/names');
 
 console.log('Starting setup script ...');
-
+const {
+  REPO, 
+  TREE, 
+  CONTENT,
+  BRANCH, 
+  HEAD, 
+  COMMIT
+} = Object.keys(names).reduce((accum, key) => {
+  accum[key] = module.context.collectionName(names[key]);
+  return accum;
+})
 [REPO, TREE, CONTENT].forEach(name => {
   console.log('Starting on vertex collection ...', name);
-  const collectionName = module.context.collectionName(name);
-  if(db._collection(collectionName) === null) {
-    db._createDocumentCollection(collectionName);
+  if(db._collection(name) === null) {
+    db._createDocumentCollection(name);
     console.log('Created vertex collection.');
   }
   else console.log('Edge collection exists. Doing nothing.');
@@ -23,9 +26,8 @@ console.log('Starting setup script ...');
 
 [BRANCH, HEAD, COMMIT].forEach(name => {
   console.log('Starting on edge collection ...', name);
-  const collectionName = module.context.collectionName(name);
-  if(db._collection(collectionName) === null) {
-    db._createEdgeCollection(collectionName);
+  if(db._collection(name) === null) {
+    db._createEdgeCollection(name);
     console.log('Created edge collection.');
   }
   else console.log('Edge collection exists. Doing nothing.');
@@ -36,12 +38,18 @@ const content1 = { value: 'initial text' };
 const content2 = { value: 'second text' };
 const content3 = { value: 'third text' };
 
-const repoVertex = module.context.collection(REPO);
-const treeVertex = module.context.collection(TREE);
-const contentVertex = module.context.collection(CONTENT);
-const branchEdge = module.context.collection(BRANCH);
-const headEdge = module.context.collection(HEAD);
-const commitEdge = module.context.collection(COMMIT);
+const repoVertex = db._collection(REPO);
+const treeVertex = db._collection(TREE);
+const contentVertex = db._collection(CONTENT);
+const branchEdge = db._collection(BRANCH);
+const headEdge = db._collection(HEAD);
+const commitEdge = db._collection(COMMIT);
+
+// Testing graph creation
+const relation = graph._relation(COMMIT, CONTENT, CONTENT);
+const edgeDefinitions = graph._extendEdgeDefinitions(relation);
+const commitGraph = graph._create('commitGraph', edgeDefinitions);
+console.log('created graph', commitGraph);
 
 const repo = repoVertex.save({ title: 'Test Title' });
 const masterTree = treeVertex.save({ name: 'master' });

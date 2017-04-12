@@ -1,3 +1,4 @@
+const jsdiff = require('diff');
 const db = require('@arangodb').db;
 const names = require('./names');
 const {
@@ -37,11 +38,6 @@ const initializeRepo = ({ title, content }) => {
 const updateRepo = (branchId, content) => {
   return db._executeTransaction({
     collections: {
-      read: [
-        BRANCH,
-        HEAD,
-        CONTENT,
-      ],
       write: [
         CONTENT,
         COMMIT,
@@ -49,7 +45,12 @@ const updateRepo = (branchId, content) => {
       ]
     },
     action: () => {
-
+      const headOld = db[HEAD].inEdges(branchId)[0];
+      const contentOld = db[CONTENT].document({ _id: headOld._to });
+      const contentNew = db[CONTENT].save({ value: content }, { returnNew: true });
+      const commit = db[COMMIT].save({ _from: contentOld._id, _to: contentNew._id, diff: jsdiff.diffWords(contentOld.value, contentNew.value)});
+      const head = db[HEAD].update(headOld._id, { _to: contentNew._id });
+      return contentNew;
     }
   });
 }
